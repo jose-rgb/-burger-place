@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import logoImg from './assets/hamb-1.png';
 import { OpeningHours } from './components/OpeningHours';
@@ -11,6 +11,7 @@ Modal.setAppElement('#root');
 
 export function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isOpenStore, setIsOpenStore] = useState(false);
 
   function handleOpenCartModal() {
     setModalIsOpen(true);
@@ -19,6 +20,26 @@ export function App() {
   function handleCloseCartModal() {
     setModalIsOpen(false);
   }
+
+  function getIsOpenStore() {
+    const date = new Date();
+    const hours = date.getHours();
+    const day = date.getDay();
+
+    if(hours >= 18 && hours < 22) {
+      setIsOpenStore(true);
+    } else {
+      setIsOpenStore(false);
+    }
+
+    if( day === 1 || day === 2  ) {
+      setIsOpenStore(false);
+    }
+  }
+
+  useEffect(()=> {
+    getIsOpenStore();
+  },[])
 
   return (
     <>
@@ -33,7 +54,7 @@ export function App() {
           <h1 className='text-3xl mt-4 mb-2 font-bold text-white'>Dev burguer</h1>
           <span className='text-white font-medium'>rua dev 10, Centro, Teresina - PI</span>
 
-          <OpeningHours />
+          <OpeningHours isOpenStore={isOpenStore}/>
         </div>
       </header>
 
