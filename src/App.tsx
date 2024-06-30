@@ -7,19 +7,49 @@ import { ShoppingCart } from '@phosphor-icons/react';
 import { CartModal } from './components/CartModal';
 import { Cart } from './components/Cart';
 
+import { api } from './services/api';
+
+import { ProductDTO } from './dtos/ProductDTO';
+import { formatPrice } from './utils/formatPrice';
+
+
 Modal.setAppElement('#root');
+
+interface ProductFormatted extends ProductDTO {
+  priceFormatted: string;
+}
 
 export function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isOpenStore, setIsOpenStore] = useState(false);
+  const [burgers, setBurgers] = useState<ProductFormatted[]>([]);
+  const [drinks, setDrinks] = useState<ProductFormatted[]>([]);
+
+
+  async function getProducts() {
+    const response = await api.get('/products');
+
+    const productsFormated = response.data.map(function(product: ProductDTO) {
+      return {...product, price: formatPrice(product.price)}
+    })
+
+    const burgers = productsFormated.filter((product: ProductDTO) => product.type === "burger");
+    setBurgers(burgers)
+
+    const drinks = productsFormated.filter((product: ProductDTO) => product.type === "drink");
+    setDrinks(drinks)
+  }
+
 
   function handleOpenCartModal() {
     setModalIsOpen(true);
   }
 
+
   function handleCloseCartModal() {
     setModalIsOpen(false);
   }
+
 
   function getIsOpenStore() {
     const date = new Date();
@@ -37,9 +67,12 @@ export function App() {
     }
   }
 
+
   useEffect(()=> {
+    getProducts();
     getIsOpenStore();
   },[])
+
 
   return (
     <>
@@ -65,15 +98,35 @@ export function App() {
       <div className='max-w-7xl mx-10 md:mx-40 mb-20'>
         <h2 className='mb-4 text-xl border-b-2'>hambúrgueres</h2>
         <main className='grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-12 mx-auto  mb-10'>
-          <MenuItem />
-          <MenuItem />
-          <MenuItem />
-          <MenuItem />
+        
+        {burgers.map(product => (     
+          <MenuItem
+            key={product.id}
+            id={product.id}
+            type={product.type}
+            image={product.image}
+            name={product.name}
+            description={product.description}
+            price={product.price}
+          />
+        ))}
+
         </main>
         <h2 className='mb-4 text-xl border-b-2'>bebidas</h2>
         <main className='grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-12 mx-auto  mb-10'>
-          <MenuItem />
-          <MenuItem />
+
+        {drinks.map(product => (     
+          <MenuItem 
+            key={product.id}
+            id={product.id}
+            type={product.type}
+            image={product.image}
+            name={product.name}
+            description={product.description}
+            price={product.price}
+          />
+        ))}
+
         </main>
       </div>
 
@@ -81,7 +134,7 @@ export function App() {
 
       <footer className='md:hidden  flex items-center justify-center w-full bg-red-500 py-3 fixed bottom-0 z-40'>
         <button onClick={handleOpenCartModal} className='flex items-center gap-2 text-white font-bold'>
-          (<span>2</span>)
+          (<span>0</span>)
           Ver carrinho
           <ShoppingCart size={23} color="#ffffff" weight="fill" />
         </button>
