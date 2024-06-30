@@ -1,13 +1,55 @@
 import { CheckFat, X } from '@phosphor-icons/react';
 import Modal from 'react-modal';
 import { CartItem } from './CartItem';
+import { useCart } from '../hooks/useCart';
+import { formatPrice } from '../utils/formatPrice';
+import { ProductDTO } from '../dtos/ProductDTO';
 
 type CartModalProps = {
     isOpen: boolean;
     onRequestClose: () => void;
 }
 
+type Product = ProductDTO & {
+    amount: number;
+}
+
 export function CartModal({isOpen, onRequestClose}: CartModalProps) {
+    const { cart, updateProductQuantity } = useCart();
+
+    const cartFormatted = cart.map(product => ({
+        ...product, priceFormatted: formatPrice(product.price), subtotal: formatPrice(product.price * product.amount)
+    }))
+
+    const total = formatPrice(
+        cart.reduce((sumTotal, product) =>{
+            sumTotal += product.price * product.amount
+
+            return sumTotal;
+        }, 0)
+    )
+
+
+    function handleProductIncrement(product: Product) {
+        const IncrementArguments = {
+          productId: product.id,
+          amount: product.amount + 1
+        };
+    
+        updateProductQuantity(IncrementArguments);
+    }
+
+
+    function handleProductDecrement(product: Product) {
+        const DecrementArguments = {
+          productId: product.id,
+          amount: product.amount -1
+        };
+    
+        updateProductQuantity(DecrementArguments);
+    }
+
+
     return(
         <Modal
             isOpen={isOpen}
@@ -15,7 +57,7 @@ export function CartModal({isOpen, onRequestClose}: CartModalProps) {
             overlayClassName="react-modal-overlay"
             className='react-modal-content'
         >
-            <div className='w-[653px] h-[555px] md:w-[753px] bg-[#F6F7F8] rounded-md p-2'>
+            <div className='w-[653px] max-h-[600px]  md:max-h-[600px]  md:w-[753px] bg-[#F6F7F8] rounded-md p-2'>
 
                 <header className='w-full flex flex-row justify-between columns-3 mb-2'>
                     <span></span>
@@ -25,14 +67,24 @@ export function CartModal({isOpen, onRequestClose}: CartModalProps) {
                     </button>
                 </header>
 
-                <main className='flex flex-col items-center justify-center'>
-                    <CartItem />
-                    <CartItem />
+                <main className='flex flex-col items-center max-h-[300px] md:max-h-[200px] overflow-auto'>
+
+                  
+                    {cartFormatted.map(product => (
+                        <CartItem
+                            key={product.id}
+                            product={product}
+                            subtotal={product.subtotal}
+                            productIncrement={handleProductIncrement}
+                            productDecrement={handleProductDecrement}
+                        />
+                    ))} 
+
                 </main>
 
                 <div className='w-full md:px-10 flex  items-center justify-between mt-3'>
                     <span className='font-bold text-lg'>total</span>
-                    <span className='font-bold'>R$ 37.80</span>
+                    <span className='font-bold'>R$ {total}</span>
                 </div>
 
                 <div className='w-full md:px-10 items-center mt-5'>

@@ -3,6 +3,6 @@ export type ProductDTO = {
     type: string;
     image: string;
     name: string;
-    description?: string;
+    description: string;
     price: number;
 }

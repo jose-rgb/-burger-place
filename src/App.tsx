@@ -11,6 +11,7 @@ import { api } from './services/api';
 
 import { ProductDTO } from './dtos/ProductDTO';
 import { formatPrice } from './utils/formatPrice';
+import { useCart } from './hooks/useCart';
 
 
 Modal.setAppElement('#root');
@@ -19,11 +20,13 @@ interface ProductFormatted extends ProductDTO {
   priceFormatted: string;
 }
 
+
 export function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isOpenStore, setIsOpenStore] = useState(false);
   const [burgers, setBurgers] = useState<ProductFormatted[]>([]);
   const [drinks, setDrinks] = useState<ProductFormatted[]>([]);
+  const { addProduct, cart } = useCart();
 
 
   async function getProducts() {
@@ -68,6 +71,11 @@ export function App() {
   }
 
 
+  function handleAddProduct(id: string) {
+    addProduct(id);
+  }
+
+
   useEffect(()=> {
     getProducts();
     getIsOpenStore();
@@ -91,7 +99,7 @@ export function App() {
         </div>
       </header>
 
-      <Cart handleOpenCartModal={handleOpenCartModal}/>
+      <Cart amount={cart.length} handleOpenCartModal={handleOpenCartModal}/>
       
       <h2 className='text-2xl md:text-3xl font-bold text-center mt-9 mb-6'>Conheça nosso menu</h2>
 
@@ -108,6 +116,7 @@ export function App() {
             name={product.name}
             description={product.description}
             price={product.price}
+            addProductCart={handleAddProduct}
           />
         ))}
 
@@ -124,6 +133,7 @@ export function App() {
             name={product.name}
             description={product.description}
             price={product.price}
+            addProductCart={handleAddProduct}
           />
         ))}
 
@@ -134,7 +144,7 @@ export function App() {
 
       <footer className='md:hidden  flex items-center justify-center w-full bg-red-500 py-3 fixed bottom-0 z-40'>
         <button onClick={handleOpenCartModal} className='flex items-center gap-2 text-white font-bold'>
-          (<span>0</span>)
+          (<span>{cart.length}</span>)
           Ver carrinho
           <ShoppingCart size={23} color="#ffffff" weight="fill" />
         </button>
