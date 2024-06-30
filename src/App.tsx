@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import logoImg from './assets/hamb-1.png';
+import logoImg from './assets/burger.jpg';
 import { OpeningHours } from './components/OpeningHours';
 import { MenuItem } from './components/MenuItem';
 import { ShoppingCart } from '@phosphor-icons/react';
@@ -116,6 +116,7 @@ export function App() {
             name={product.name}
             description={product.description}
             price={product.price}
+            buttonAddProduct={isOpenStore}
             addProductCart={handleAddProduct}
           />
         ))}
@@ -133,6 +134,7 @@ export function App() {
             name={product.name}
             description={product.description}
             price={product.price}
+            buttonAddProduct={isOpenStore}
             addProductCart={handleAddProduct}
           />
         ))}

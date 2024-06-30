@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <CartProvider>
       <App />
-      <ToastContainer autoClose={1500} position="top-center"/>
+      <ToastContainer autoClose={1400} position="top-right"/>
     </CartProvider>
   </React.StrictMode>,
 )
