@@ -18,6 +18,7 @@ type UpdateProductQuantity = {
 
 export type CartContextData = {
     cart: Product[];
+    cleanCart: () => void;
     addProduct: (productId: string) => Promise<void>;
     removeProduct: (productId: string) => void;
     updateProductQuantity: ({productId, amount}: UpdateProductQuantity) => void;
@@ -102,9 +103,13 @@ export function CartProvider({ children }: CartProviderProps){
         }
     }
 
+    async function cleanCart() {
+        setCart([])
+    }
+
 
     return(
-        <CartContext.Provider value={{cart, addProduct, removeProduct, updateProductQuantity}}>
+        <CartContext.Provider value={{cart, addProduct, removeProduct, updateProductQuantity, cleanCart}}>
             {children}
         </CartContext.Provider>
     );
