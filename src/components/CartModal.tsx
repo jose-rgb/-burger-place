@@ -106,8 +106,8 @@ export function CartModal({isOpen, onRequestClose}: CartModalProps) {
             <div className='w-[653px] max-h-[600px]  md:max-h-[600px]  md:w-[753px] bg-[#F6F7F8] rounded-md p-2'>
 
                 <header className='w-full flex flex-row justify-between columns-3 mb-2 mt-2'>
-                    <span></span>
-                    <h2 className='text-xl md:text-2xl'>Meu carrinho</h2>
+                    <div></div>
+                    <h2 className='text-xl ml-10 md:text-2xl'>Meu carrinho</h2>
                     <button type="button" onClick={onRequestClose} className='rounded-lg p-1'>
                         <X size={24} color="#030101" weight="bold" />
                     </button>

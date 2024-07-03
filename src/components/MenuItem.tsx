@@ -33,7 +33,7 @@ export function MenuItem({id, image, name, description, price, buttonAddProduct,
                                 <ShoppingCart size={20} color="#ffffff" weight="fill" />
                             </button>
                         :
-                            <button className='bg-red-400 opacity-40 flex flex-row px-3 py-1 rounded' onClick={() => storeClosedMessage()}>
+                            <button className='bg-red-400 flex flex-row px-3 py-1 rounded' onClick={() => storeClosedMessage()}>
                                 <ShoppingCart size={20} color="#ffffff" weight="fill" />
                             </button>
                     }

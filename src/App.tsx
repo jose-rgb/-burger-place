@@ -81,7 +81,7 @@ export function App() {
   useEffect(()=> {
     getProducts();
     getIsOpenStore();
-    setTimeout(() => setIsLoading(false), 1500)
+    setTimeout(() => setIsLoading(false), 1700)
   },[])
 
   if (isloading) {
