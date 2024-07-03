@@ -27,7 +27,7 @@ export function CartItem({product, subtotal, productIncrement, productDecrement}
                 <img 
                     src={product.image}
                     alt="burger" 
-                    className='w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300 bg-cover'
+                    className='w-32 h-24 rounded-md hover:scale-110 hover:-rotate-2 duration-300 bg-cover object-cover'
                 />
             </div>
 

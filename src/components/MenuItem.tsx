@@ -17,7 +17,7 @@ export function MenuItem({id, image, name, description, price, buttonAddProduct,
             <img 
                 src={image}
                 alt="burger" 
-                className='w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300 bg-cover'
+                className='w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300 bg-cover object-cover'
             />
             <div>
                 <p>{name}</p>
