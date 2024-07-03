@@ -12,6 +12,7 @@ import { api } from './services/api';
 import { ProductDTO } from './dtos/ProductDTO';
 import { formatPrice } from './utils/formatPrice';
 import { useCart } from './hooks/useCart';
+import { Loading } from './components/Loading';
 
 
 Modal.setAppElement('#root');
@@ -27,6 +28,7 @@ export function App() {
   const [burgers, setBurgers] = useState<ProductFormatted[]>([]);
   const [drinks, setDrinks] = useState<ProductFormatted[]>([]);
   const { addProduct, cart } = useCart();
+  const [isloading, setIsLoading] = useState(true)
 
 
   async function getProducts() {
@@ -79,8 +81,12 @@ export function App() {
   useEffect(()=> {
     getProducts();
     getIsOpenStore();
+    setTimeout(() => setIsLoading(false), 1500)
   },[])
 
+  if (isloading) {
+    return <Loading/>
+  }
 
   return (
     <>
